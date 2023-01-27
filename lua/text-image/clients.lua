@@ -1,9 +1,17 @@
 local M = {}
 
--- TODO - add more clients
 local client_make_command_dict = {
 	["chafa"] = function(path, width, height)
 		return "chafa " .. path .. " --size=" .. width .. "x" .. height
+	end,
+	["viu"] = function(path)
+		return "viu --transparent " .. path
+	end,
+	["termpix"] = function(path, width, height)
+		return "termpix --true-color " .. path .. " --max-width " .. width .. " --max-height " .. height
+	end,
+	["tiv"] = function(path)
+		return "tiv " .. path
 	end,
 }
 
