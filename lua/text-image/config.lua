@@ -23,7 +23,6 @@ end
 
 return setmetatable(M, {
 	__index = function(_, key)
-		print(key)
 		return config[key]
 	end,
 })
