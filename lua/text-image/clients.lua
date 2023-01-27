@@ -1,5 +1,11 @@
-local M = {}
+---@mod text-image.clients
 
+local clients = {}
+
+---@alias ClientMakeCommand fun(path: string, width: number, height: number): string
+
+---@private
+---@type table<string, ClientMakeCommand>
 local client_make_command_dict = {
 	["chafa"] = function(path, width, height)
 		return "chafa " .. path .. " --size=" .. width .. "x" .. height
@@ -15,7 +21,9 @@ local client_make_command_dict = {
 	end,
 }
 
-function M.detect_client()
+---@private
+---@return ClientMakeCommand | nil
+function clients.detect_client()
 	local has_client = vim.fn.executable
 
 	for client_name, client_make_command in pairs(client_make_command_dict) do
@@ -25,8 +33,11 @@ function M.detect_client()
 	end
 end
 
-function M.get_client_make_command(client)
+---@private
+---@param client string
+---@return ClientMakeCommand | nil
+function clients.get_client_make_command(client)
 	return client_make_command_dict[client]
 end
 
-return M
+return clients

@@ -1,28 +1,34 @@
+---@mod text-image.config
+
 local clients = require("text-image.clients")
 
+---@class Config
+---@field client? (string | ClientMakeCommand) The client that
+
+---@type Config
 local default_config = {
 	client = "__detect", -- This value will use the client auto-detect feature
 }
 
-local M = {}
+local config = {
+	---@type Config
+	value = vim.tbl_deep_extend("force", {}, default_config),
+}
 
---- Duplicate the default config
-local config = vim.tbl_deep_extend("force", {}, default_config)
+---@private
+---@param user_config Config
+function config.init(user_config)
+	local value = vim.tbl_deep_extend("force", config.value, user_config)
 
-function M.init(user_config)
-	config = vim.tbl_deep_extend("force", config, user_config)
-
-	if config.client == "__detect" or not config.client then
-		config.client = clients.detect_client()
+	if value.client == "__detect" or not value.client then
+		value.client = clients.detect_client()
 	end
 
-	if type(config.client) == "string" then
-		config.client = clients.get_client_make_command(config.client)
+	if type(value.client) == "string" then
+		value.client = clients.get_client_make_command(value.client)
 	end
+
+	config.value = value
 end
 
-return setmetatable(M, {
-	__index = function(_, key)
-		return config[key]
-	end,
-})
+return config
