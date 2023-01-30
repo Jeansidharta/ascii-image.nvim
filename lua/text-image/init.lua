@@ -5,6 +5,7 @@
 ---@brief ]]
 
 local config = require("text-image.config")
+local utils = require("text-image.utils")
 
 local text_image = {}
 
@@ -73,6 +74,22 @@ function text_image.open_image_at_window(path, win_nr)
 	})
 end
 
+---Find all windows that contain said buffer, and call open_image_at_window on them.
+---@param buf_nr number
+function text_image.open_image_at_buffer(buf_nr)
+	local windows_with_buffer = utils.find_windows_with_buffer(buf_nr)
+	local name = vim.api.nvim_buf_get_name(buf_nr)
+	vim.schedule(function()
+		---@param window number
+		vim.tbl_map(function(window)
+			if not vim.api.nvim_win_is_valid(window) then
+				return
+			end
+			text_image.open_image_at_window(name, window)
+		end, windows_with_buffer)
+	end)
+end
+
 ---@tag :TextImageOpen
 ---
 ---Initialize the plugin. Creates a user command TextImageOpen.
@@ -93,6 +110,26 @@ function text_image.setup(user_config)
 		end,
 		{ force = true, desc = "Preview image in current window", nargs = "?" }
 	)
+
+	if config.value.auto_open_on_image then
+		vim.filetype.add({
+			extension = {
+				png = "png",
+				jpg = "jpg",
+				jpeg = "jpg",
+				gif = "gif",
+				svg = "svg",
+			},
+		})
+
+		vim.api.nvim_create_autocmd({ "FileType" }, {
+			pattern = { "png", "jpg", "gif", "svg" },
+			callback = function(params)
+				text_image.open_image_at_buffer(params.buf)
+			end,
+			desc = "Automatically display image using text-image whenever a image file is opened",
+		})
+	end
 end
 
 return text_image

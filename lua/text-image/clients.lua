@@ -35,7 +35,7 @@ end
 
 ---@private
 ---@param client string
----@return ClientMakeCommand | nil
+---@return nil | ClientMakeCommand
 function clients.get_client_make_command(client)
 	return client_make_command_dict[client]
 end
