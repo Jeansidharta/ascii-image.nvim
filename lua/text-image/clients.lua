@@ -16,8 +16,8 @@ local client_make_command_dict = {
 	["termpix"] = function(path, width, height)
 		return "termpix --true-color " .. path .. " --max-width " .. width .. " --max-height " .. height
 	end,
-	["tiv"] = function(path)
-		return "tiv " .. path
+	["tiv"] = function(path, width, height)
+		return "tiv " .. path .. " -w " .. width .. " -h " .. height
 	end,
 }
 
