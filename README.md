@@ -1,6 +1,6 @@
 # ⚠️ DEPRECATION WARNING ⚠
 
-When I wrote this plugin, the tools for displaying image in the terminal were restricted to ascii. Since then, implementation of the ITerm image protocol was more widespread. Today, this plugin does not work with most image displaying, and I'm not willing to maintain it. This code is here mainly as a reference for myself in the future.
+When I wrote this plugin, the tools for displaying image in the terminal were restricted to ascii. Since then, implementation of the ITerm image protocol has become more widespread. Today, this plugin does not work with most image displaying tools, and I'm not willing to maintain it. This code is here mainly as a reference for myself in the future.
 
 It still works using `tiv` as a client. Though it has a very poor resolution
 
